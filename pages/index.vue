@@ -94,7 +94,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { getMovies as loadMovies, useSearch } from '~/api/api'
+
 
 export default {
   name: 'IndexPage',
@@ -125,21 +126,14 @@ export default {
 
   methods: {
     async getMovies() {
-      const responseData = await axios.get(
-        'https://api.themoviedb.org/3/movie/now_playing?api_key=07da5581753c3a2cbe717760af2f71ec&language=en-US&page=1'
-      )
-
-      const result = await responseData.data.results
-      this.movies = [...result]
+      const responseData = await loadMovies();
+      this.movies = [...responseData]
     },
 
     async searchMovies() {
-      const responseData = await axios.get(
-        `https://api.themoviedb.org/3/search/movie?api_key=07da5581753c3a2cbe717760af2f71ec&language=en-US&page=1&query=${this.searchInput}`
-      )
-      const result = await responseData.data.results
+      const responseData = await useSearch(this.searchInput);
 
-      this.searchedMovies = [...result]
+      this.searchedMovies = [...responseData]
     },
 
     clearSearch() {

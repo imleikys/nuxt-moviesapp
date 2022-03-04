@@ -45,7 +45,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+import {getMovie} from '../../api/api';
+
 export default {
   name: 'SingleMovie',
   data() {
@@ -67,11 +68,8 @@ export default {
 
   methods: {
     async getMovie() {
-      const responseData = await axios.get(
-        `https://api.themoviedb.org/3/movie/${this.$route.params.movieid}?api_key=07da5581753c3a2cbe717760af2f71ec&language=en-US`
-      )
-      const result = await responseData.data
-      this.movie = result
+      const responseData = await getMovie(this.$route.params.movieid);
+      this.movie = responseData;
     },
   },
 
